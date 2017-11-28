@@ -32,7 +32,7 @@ public class LoginUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_user);
 
-        sqliteHelper = new SqliteHelper(this, "db_contacts", null, 1);
+        sqliteHelper = new SqliteHelper(this, "db_contact", null, 1);
 
         editTextUser = (EditText) findViewById(R.id.id_et_users);
         editTextPassword = (EditText) findViewById(R.id.id_et_password);

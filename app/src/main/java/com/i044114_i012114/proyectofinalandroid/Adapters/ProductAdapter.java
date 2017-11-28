@@ -29,7 +29,7 @@ import java.util.List;
  * Created by ACER on 21/11/2017.
  */
 
-public class ProductAdapter  extends  RecyclerView.Adapter<ProductAdapter.ViewHolder>{
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
     SqliteHelper sqliteHelper;
 
@@ -57,20 +57,27 @@ public class ProductAdapter  extends  RecyclerView.Adapter<ProductAdapter.ViewHo
         Picasso.with(context).load(contactList.get(position).getUrl()).into(holder.imageView);
 
 
-        holder.checkBoxfav.setOnClickListener( new View.OnClickListener() {
+        holder.checkBoxfav.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick (View v){
-
+            public void onClick(View v) {
                 sqliteHelper = new SqliteHelper(context, "db_contact", null, 1);
                 IdUser idUsu = new IdUser();
                 SQLiteDatabase db = sqliteHelper.getWritableDatabase();
-                ContentValues values = new ContentValues();
-                values.put(Constants.TABLA_FIELD_ID_US, idUsu.getIdusu());
-                values.put(Constants.TABLA_FIELD_ID_PROD, contactList.get(position).getId());
-                db.insert(Constants.TABLA_NAME_FAVORITE, Constants.TABLA_FIELD_ID, values);
-                Toast.makeText(context, "Bienvenido a MediFarmBlue "+ idUsu.getIdusu(), Toast.LENGTH_SHORT).show();
-                Intent  intent = new Intent(context, FavoriteActivity.class);
-                v.getContext().startActivity(intent);
+                if (holder.checkBoxfav.isChecked()) {
+
+                    ContentValues values = new ContentValues();
+                    values.put(Constants.TABLA_FIELD_ID_US, idUsu.getIdusu());
+                    values.put(Constants.TABLA_FIELD_ID_PROD, contactList.get(position).getId());
+                    db.insert(Constants.TABLA_NAME_FAVORITE, Constants.TABLA_FIELD_ID_FAV, values);
+                    Toast.makeText(context, "favorito "+ idUsu.getIdusu(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, FavoriteActivity.class);
+                    v.getContext().startActivity(intent);
+                } else {
+                    Toast.makeText(context, "eliminado "+ idUsu.getIdusu(), Toast.LENGTH_SHORT).show();
+                    db.execSQL("delete from favorite where id_fav = (select id_fav from favorite where id_user ="+ idUsu.getIdusu() + " and id_prod = " + contactList.get(position).getId()+" )");
+
+                }
+
             }
         });
 
@@ -97,7 +104,7 @@ public class ProductAdapter  extends  RecyclerView.Adapter<ProductAdapter.ViewHo
             textViewName = (TextView) item.findViewById(R.id.id_tv_item_name);
             textViewDescription = (TextView) item.findViewById(R.id.id_tv_item_des);
             textViewCantidad = (TextView) item.findViewById(R.id.id_tv_item_can);
-            imageView= (ImageView) item.findViewById(R.id.id_img_item_cardview);
+            imageView = (ImageView) item.findViewById(R.id.id_img_item_cardview);
             checkBoxfav = (CheckBox) item.findViewById(R.id.id_fav_pa);
         }
 
@@ -109,7 +116,7 @@ public class ProductAdapter  extends  RecyclerView.Adapter<ProductAdapter.ViewHo
             intent.putExtra("nameprod", contactList.get(getLayoutPosition()).getNamepro());
             intent.putExtra("description", contactList.get(getLayoutPosition()).getDescription());
             intent.putExtra("cantidad", contactList.get(getLayoutPosition()).getCantidad());
-            intent.putExtra("url",contactList.get(getLayoutPosition()).getUrl());
+            intent.putExtra("url", contactList.get(getLayoutPosition()).getUrl());
             contextItem.startActivity(intent);
 
 

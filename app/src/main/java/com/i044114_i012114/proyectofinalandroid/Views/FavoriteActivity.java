@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.i044114_i012114.proyectofinalandroid.Adapters.FavoriteAdapter;
 import com.i044114_i012114.proyectofinalandroid.Helpers.SqliteHelper;
 import com.i044114_i012114.proyectofinalandroid.Models.Favorite;
+import com.i044114_i012114.proyectofinalandroid.Models.IdUser;
 import com.i044114_i012114.proyectofinalandroid.R;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class FavoriteActivity extends AppCompatActivity {
     RecyclerView recyclerViewFavorite;
     FavoriteAdapter favoriteAdapter;
     List<Favorite> favoriteList = new ArrayList<>();
+    IdUser idUsu = new IdUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +44,24 @@ public class FavoriteActivity extends AppCompatActivity {
     }
 
     public void listFavorite(){
+        Toast.makeText(this, "asdsfasdfs", Toast.LENGTH_SHORT).show();
+
+
         SQLiteDatabase db = sqliteHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select id_fav, id_user_id_prod from favorite order by id desc", null);
+
+
+
+        Cursor cursor = db.rawQuery("select p.namepro, p.cantidad, p.url from products p inner join favorite f on p.id = f.id_prod where f.id_user = "+ idUsu.getIdusu(), null);
 
         while (cursor.moveToNext()){
             Favorite favorite = new Favorite();
-            favorite.setId_fav(cursor.getInt(0));
-            favorite.setId_user(cursor.getInt(1));
-            favorite.setId_prod(cursor.getInt(2));
-
+            //favorite.setId_fav(cursor.getInt(0));
+            //favorite.setId_user(cursor.getInt(1));
+            favorite.setName(cursor.getString(0));
+            favorite.setCantidad(cursor.getString(1));
+            favorite.setUrl(cursor.getString(2));
            favoriteList.add(favorite);
+
         }
 
         cursor.close();

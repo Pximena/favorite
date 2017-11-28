@@ -39,7 +39,7 @@ public class RegisterUserActivity extends AppCompatActivity {
         textInputEditTextPassword = (TextInputEditText) findViewById(R.id.id_tv_password);
 
 
-        sqliteHelper = new SqliteHelper(this, "db_contacts", null, 1);
+        sqliteHelper = new SqliteHelper(this, "db_contact", null, 1);
     }
 
     public void onClickCreateUser(View view){

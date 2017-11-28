@@ -10,7 +10,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/id_img_item_cardview"
+                android:id="@+id/id_img_item_cardview_fav"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"/>
